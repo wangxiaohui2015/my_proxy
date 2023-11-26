@@ -1,0 +1,6 @@
+2023-11-26 09:02:12 [com.my.proxy.util.ConfigUtil]-[ERROR] configuration file doesn't exist, /home/sunny/work/git/my_proxy/src/main/resourcesd/conf/simplelb.properties
+2023-11-26 09:02:12 [com.my.proxy.Main]-[ERROR] Failed to initialize system.
+java.lang.Exception: configuration file doesn't exist, /home/sunny/work/git/my_proxy/src/main/resourcesd/conf/simplelb.properties
+	at com.my.proxy.util.ConfigUtil.init(ConfigUtil.java:66)
+	at com.my.proxy.Main.init(Main.java:41)
+	at com.my.proxy.Main.main(Main.java:25)
