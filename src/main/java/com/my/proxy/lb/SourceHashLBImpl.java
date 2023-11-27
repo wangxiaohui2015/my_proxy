@@ -1,6 +1,9 @@
 package com.my.proxy.lb;
 
+import java.util.Map;
+
 import com.my.proxy.entity.BackendServer;
+import com.my.proxy.manager.LBManager;
 
 /**
  * LB source hash algorithm, all server weight is 1 by default.
@@ -10,8 +13,10 @@ import com.my.proxy.entity.BackendServer;
  */
 public class SourceHashLBImpl extends AbstractLoadBalancer {
 
-    @Override
-    protected BackendServer getBackendServer(String clientIP, int clientPort) throws Exception {
-        return servers.get(clientIP.hashCode() % servers.size());
-    }
+	@Override
+	protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
+		String clientIp = params.get(LBManager.PARAM_KEY_CLIENT_IP);
+		String clientPort = params.get(LBManager.PARAM_KEY_CLIENT_PORT);
+		return servers.get((clientIp + clientPort).hashCode() % servers.size());
+	}
 }
