@@ -16,41 +16,41 @@ import com.my.proxy.util.ConfigUtil;
  */
 public abstract class AbstractLoadBalancer {
 
-	protected List<BackendServer> servers;
+    protected List<BackendServer> servers;
 
-	public AbstractLoadBalancer() {
-		initServers();
-	}
+    public AbstractLoadBalancer() {
+        initServers();
+    }
 
-	private void initServers() {
-		servers = ConfigUtil.getInstance().getBackendServers();
-		List<BackendServer> serverList = new ArrayList<>();
-		servers.forEach(server -> {
-			for (int i = 0; i < server.getWeight(); i++) {
-				serverList.add(server);
-			}
-		});
-		Collections.shuffle(serverList);
-		servers = Collections.synchronizedList(serverList);
-	}
+    private void initServers() {
+        servers = ConfigUtil.getInstance().getBackendServers();
+        List<BackendServer> serverList = new ArrayList<>();
+        servers.forEach(server -> {
+            for (int i = 0; i < server.getWeight(); i++) {
+                serverList.add(server);
+            }
+        });
+        Collections.shuffle(serverList);
+        servers = Collections.synchronizedList(serverList);
+    }
 
-	protected abstract BackendServer getBackendServer(Map<String, String> params) throws Exception;
+    protected abstract BackendServer getBackendServer(Map<String, String> params) throws Exception;
 
-	public BackendServer getServer(Map<String, String> params) throws Exception {
-		if (servers.isEmpty()) {
-			String errMsg = "No backend server is available.";
-			throw new Exception(errMsg);
-		}
-		return getBackendServer(params);
-	}
+    public BackendServer getServer(Map<String, String> params) throws Exception {
+        if (servers.isEmpty()) {
+            String errMsg = "No backend server is available.";
+            throw new Exception(errMsg);
+        }
+        return getBackendServer(params);
+    }
 
-	public void addServer(BackendServer server) {
-		for (int i = 0; i < server.getWeight(); i++) {
-			servers.add(server);
-		}
-	}
+    public void addServer(BackendServer server) {
+        for (int i = 0; i < server.getWeight(); i++) {
+            servers.add(server);
+        }
+    }
 
-	public void delServer(BackendServer server) {
-		servers.removeIf(server1 -> server1.getIp().equals(server.getIp()) && server1.getPort() == server.getPort());
-	}
+    public void delServer(BackendServer server) {
+        servers.removeIf(server1 -> server1.getIp().equals(server.getIp()) && server1.getPort() == server.getPort());
+    }
 }

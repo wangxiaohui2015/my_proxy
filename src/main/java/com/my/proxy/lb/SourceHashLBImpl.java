@@ -13,10 +13,10 @@ import com.my.proxy.manager.LBManager;
  */
 public class SourceHashLBImpl extends AbstractLoadBalancer {
 
-	@Override
-	protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
-		String clientIp = params.get(LBManager.PARAM_KEY_CLIENT_IP);
-		String clientPort = params.get(LBManager.PARAM_KEY_CLIENT_PORT);
-		return servers.get((clientIp + clientPort).hashCode() % servers.size());
-	}
+    @Override
+    protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
+        String clientIp = params.get(LBManager.PARAM_KEY_CLIENT_IP);
+        String clientPort = params.get(LBManager.PARAM_KEY_CLIENT_PORT);
+        return servers.get((clientIp + clientPort).hashCode() % servers.size());
+    }
 }

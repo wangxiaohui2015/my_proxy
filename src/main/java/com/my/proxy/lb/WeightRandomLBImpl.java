@@ -15,8 +15,8 @@ public class WeightRandomLBImpl extends AbstractLoadBalancer {
 
     private Random random = new Random();
 
-	@Override
-	protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
-		return servers.get(random.nextInt(servers.size()));
-	}
+    @Override
+    protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
+        return servers.get(random.nextInt(servers.size()));
+    }
 }

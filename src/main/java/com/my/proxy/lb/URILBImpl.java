@@ -18,29 +18,29 @@ import com.my.proxy.util.ConfigUtil;
  */
 public class URILBImpl extends AbstractLoadBalancer {
 
-	private Random random = new Random();
+    private Random random = new Random();
 
-	@Override
-	protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
-		String clientUri = params.get(LBManager.PARAM_KEY_CLIENT_URI);
-		initBackendServersByURI(clientUri);
-		return servers.get(random.nextInt(servers.size()));
-	}
+    @Override
+    protected BackendServer getBackendServer(Map<String, String> params) throws Exception {
+        String clientUri = params.get(LBManager.PARAM_KEY_CLIENT_URI);
+        initBackendServersByURI(clientUri);
+        return servers.get(random.nextInt(servers.size()));
+    }
 
-	private void initBackendServersByURI(String clientURI) {
-		List<BackendServer> configuredServers = ConfigUtil.getInstance().getBackendServers();
-		List<BackendServer> serverList = new ArrayList<>();
-		configuredServers.forEach(server -> {
-			if (!clientURI.matches(server.getUri())) {
-				return;
-			}
-			for (int i = 0; i < server.getWeight(); i++) {
-				serverList.add(server);
-			}
-		});
-		Collections.shuffle(serverList);
-		if (!serverList.isEmpty()) {
-			servers = Collections.synchronizedList(serverList);
-		}
-	}
+    private void initBackendServersByURI(String clientURI) {
+        List<BackendServer> configuredServers = ConfigUtil.getInstance().getBackendServers();
+        List<BackendServer> serverList = new ArrayList<>();
+        configuredServers.forEach(server -> {
+            if (!clientURI.matches(server.getUri())) {
+                return;
+            }
+            for (int i = 0; i < server.getWeight(); i++) {
+                serverList.add(server);
+            }
+        });
+        Collections.shuffle(serverList);
+        if (!serverList.isEmpty()) {
+            servers = Collections.synchronizedList(serverList);
+        }
+    }
 }

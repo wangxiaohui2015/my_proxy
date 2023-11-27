@@ -9,11 +9,12 @@ import com.my.proxy.manager.LBServerManager;
 import com.my.proxy.util.ConfigUtil;
 
 /**
- * This is the main entry, please set root directory when running this program, below is an example,
- * -DrootDir=/home/user/work/root_dir
+ * This is the main entry, please set root directory when running this program,
+ * below is an example, -DrootDir=/home/user/work/root_dir
  * 
  * </br>
- * This is to make sure the path of configuration is is '<rootDir>/conf/simplelb.properties'
+ * This is to make sure the path of configuration is is
+ * '<rootDir>/conf/simplelb.properties'
  * 
  * @author Sunny
  */
