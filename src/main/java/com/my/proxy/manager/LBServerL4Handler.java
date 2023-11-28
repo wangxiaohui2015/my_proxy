@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.my.proxy.entity.BackendServer;
+import com.my.proxy.util.ConfigUtil;
 
 /**
  * LB server L4 handler.
@@ -27,17 +28,19 @@ public class LBServerL4Handler extends AbstractLBServerHandler {
     public void run() {
         try {
             logger.info(clientSocket.getRemoteSocketAddress().toString().replace("/", "") + " connected to LB server.");
-            clientSocket.setSoTimeout(CLIENT_TIMEOUT);
+            clientSocket.setSoTimeout(ConfigUtil.getInstance().getLbClientTimeout());
 
             // Get a server to handle client request
             Map<String, String> params = new HashMap<String, String>();
             params.put(LBManager.PARAM_KEY_CLIENT_IP, clientSocket.getInetAddress().getHostAddress());
             params.put(LBManager.PARAM_KEY_CLIENT_PORT, String.valueOf(clientSocket.getPort()));
             BackendServer backendServer = LBManager.getInstance().getBackendServer(params);
-            logger.info("Got back end server: '" + backendServer.getName() + "'");
+            logger.info("Got back end server: " + backendServer.getName() + ", ip: " + backendServer.getIp()
+                    + ", port: " + backendServer.getPort());
+
             serverSocket = new Socket();
             serverSocket.connect(new InetSocketAddress(backendServer.getIp(), backendServer.getPort()));
-            serverSocket.setSoTimeout(SERVER_TIME_OUT);
+            serverSocket.setSoTimeout(ConfigUtil.getInstance().getLbServerTimeout());
 
             // Create two threads to transfer data
             Thread t1 = new TransferDataThread(serverSocket.getInputStream(), clientSocket.getOutputStream());

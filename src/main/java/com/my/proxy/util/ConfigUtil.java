@@ -30,12 +30,16 @@ public class ConfigUtil {
     private static final String KEY_LB_MODE = "lb.mode";
     private static final String KEY_LB_THREADS = "lb.threads";
     private static final String KEY_BACKEND_SERVER_PREFIX = "server";
+    private static final String KEY_LB_CLIENT_TIMEOUT = "lb.client.timeout";
+    private static final String KEY_LB_SERVER_TIMEOUT = "lb.server.timeout";
 
     private String configFilePath = "";
     private String lbProtocol = "tcp";
     private int lbPort = 80;
     private String lbMode = "random";
     private int lbThreads = 8;
+    private int lbClientTimeout = 10 * 1000;
+    private int lbServerTimeout = 10 * 1000;
     private List<BackendServer> backendServers = new ArrayList<BackendServer>();
 
     public static final ConfigUtil getInstance() {
@@ -58,6 +62,14 @@ public class ConfigUtil {
         return lbThreads;
     }
 
+    public int getLbClientTimeout() {
+        return lbClientTimeout;
+    }
+
+    public int getLbServerTimeout() {
+        return lbServerTimeout;
+    }
+
     public List<BackendServer> getBackendServers() {
         return backendServers;
     }
@@ -78,6 +90,8 @@ public class ConfigUtil {
             initLBPort();
             initLBMode();
             initLBThreads();
+            initLBClientTimeout();
+            initLBServerTimeout();
             initServers();
             checkServers();
         } catch (Exception e) {
@@ -126,6 +140,30 @@ public class ConfigUtil {
             lbThreads = Integer.parseInt(threads);
         } catch (NumberFormatException e) {
             logger.warn("Failed to parse lb threads, will use default value.", e);
+        }
+    }
+
+    private void initLBClientTimeout() {
+        String timeout = properties.getProperty(KEY_LB_CLIENT_TIMEOUT);
+        if (null == timeout || "".equals(timeout)) {
+            return;
+        }
+        try {
+            lbClientTimeout = Integer.parseInt(timeout);
+        } catch (NumberFormatException e) {
+            logger.warn("Failed to parse lb client timeout, will use default value.", e);
+        }
+    }
+    
+    private void initLBServerTimeout() {
+        String timeout = properties.getProperty(KEY_LB_SERVER_TIMEOUT);
+        if (null == timeout || "".equals(timeout)) {
+            return;
+        }
+        try {
+            lbServerTimeout = Integer.parseInt(timeout);
+        } catch (NumberFormatException e) {
+            logger.warn("Failed to parse lb server timeout, will use default value.", e);
         }
     }
 

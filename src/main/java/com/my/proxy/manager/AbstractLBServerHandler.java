@@ -17,8 +17,6 @@ public abstract class AbstractLBServerHandler implements Runnable {
 
     private static Logger logger = Logger.getLogger(AbstractLBServerHandler.class);
 
-    public static final int CLIENT_TIMEOUT = 5000;
-    public static final int SERVER_TIME_OUT = 5000;
     private static final int BUFFER_SIZE = 10240;
 
     protected Socket clientSocket;
