@@ -33,7 +33,7 @@ public class LBServerManager {
     public void startServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(ConfigUtil.getInstance().getLbPort());
-            logger.info("Started LB server successfully on port:" + ConfigUtil.getInstance().getLbPort());
+            logger.info("Started proxy server successfully on port: " + ConfigUtil.getInstance().getLbPort());
             if (LBManager.getInstance().isL4Protocol()) {
                 startServerForL4Proxy(serverSocket);
             } else if (LBManager.getInstance().isL7Protocol()) {
